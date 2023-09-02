@@ -11,11 +11,11 @@ export const ProviderTable = ({ data }: { data: Array<ProviderInfo> }) => {
             <th>Description</th>
           </tr>
         </thead>
-        {/* Body of the rollups */}
+        
+        {/* Body */}
         <tbody>
-          {/* row 1 */}
-          {data.map((d) => (
-            <tr>
+          {data.map((d, idx) => (
+            <tr key={idx}>
               <td>
                 <div className="flex items-center space-x-3">
                   <div>

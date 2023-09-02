@@ -1,10 +1,22 @@
+import { useEffect } from 'react';
 import { RollupCreationModal } from '../components/RollupCreationModal';
 import { RollupTable } from '../components/RollupTable';
+import { useGetRollups } from '../hooks/useGetRollups';
 import { useRequestRollup } from '../hooks/useRequestRollup';
 import { RollupCreateRequest, RollupInfo, RollupStatus } from '../types';
 
 export const RollupList = () => {
-  const { writeAsync, isLoading } = useRequestRollup();
+  const {
+    data: rollupData,
+    // isError: isGetRollupError,
+    // isLoading: isGetRollupLoading,
+    refetch: refetchRollupInfos,
+  } = useGetRollups();
+  const {
+    writeAsync,
+    isLoading: isRequestRollupLoading,
+    isSuccess: isRequestRollupSuccess,
+  } = useRequestRollup();
 
   const windowContext = window as unknown as typeof window & {
     rollup_creation: {
@@ -12,41 +24,27 @@ export const RollupList = () => {
     };
   };
 
+  // Periodic query on the node status, initialize once
+  useEffect(() => {
+    const timer = setInterval(() => {
+      console.log('Fetching new info');
+      refetchRollupInfos();
+    }, 10000);
+    return () => clearInterval(timer);
+  }, [refetchRollupInfos]);
+
+  // For refetching after submitting transactions
+  useEffect(() => {
+    if (isRequestRollupSuccess) {
+      refetchRollupInfos();
+    }
+  }, [refetchRollupInfos, isRequestRollupSuccess]);
+
   const onSubmitCreate = async (data: RollupCreateRequest) => {
-    if (!isLoading) {
+    if (!isRequestRollupLoading) {
       await writeAsync({ args: [data.name, data.chainId, data.config] });
     }
   };
-
-  // Do some data fetching here
-  const rollupData: Array<RollupInfo> = [
-    {
-      name: 'rollup 1',
-      chainID: 11312,
-      config: '',
-      provider: 'RicRollup Default',
-      queuedTimestamp: Date.now(),
-      status: RollupStatus.ACTIVATED,
-    },
-    {
-      name: 'rollup 2',
-      chainID: 11312,
-      config:
-        '{kdjfkjshdkjhjdsghgksjgfjgjhehkjgdkfgjkdfhgkdfjhgkjdfhgkjdhkjghdfkjghdfkjghdkjfhgkjdfhgkjdfhgkjdhfgkjhdfkjghdkfghfjdkhgfkdjghdfkjhgdfkjhgkjdfhgkjdfhgkjdfhkjgdhfgkjhdfjkghdfkjghkjdfhgkjdfhkj}',
-      provider: 'RicRollup Default',
-      queuedTimestamp: Date.now(),
-      status: RollupStatus.QUEUED,
-    },
-    {
-      name: 'rollup 3',
-      chainID: 11312,
-      config: '',
-      provider: 'RicRollup Default',
-      queuedTimestamp: Date.now(),
-      status: RollupStatus.REQUESTED,
-    },
-  ];
-
   return (
     <>
       <div className="flex flex-col mx-auto mt-12">
@@ -90,11 +88,22 @@ export const RollupList = () => {
               </button>
             </div>
             <h2 className="card-title">Current rollups</h2>
-            <RollupTable data={rollupData} />
+            <RollupTable
+              data={
+                rollupData
+                  ? (rollupData
+                      .map((d) => d.result)
+                      .filter((d) => d !== undefined) as RollupInfo[])
+                  : []
+              }
+            />
           </div>
         </div>
       </div>
-      <RollupCreationModal isLoading={isLoading} onSubmit={onSubmitCreate} />
+      <RollupCreationModal
+        isLoading={isRequestRollupLoading}
+        onSubmit={onSubmitCreate}
+      />
     </>
   );
 };

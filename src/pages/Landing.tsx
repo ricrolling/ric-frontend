@@ -12,5 +12,5 @@ export const Landing = () => {
     }
   }, [isConnected]);
 
-  return <></>;
+  return <>Landing</>;
 };

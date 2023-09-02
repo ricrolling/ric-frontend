@@ -17,7 +17,7 @@ import {
   taikoTestnetSepolia,
   lineaTestnet,
   linea,
-  foundry
+  foundry,
 } from 'wagmi/chains';
 import merge from 'lodash.merge';
 import {
@@ -46,7 +46,7 @@ const { chains, publicClient } = configureChains(
     optimism,
     arbitrum,
     base,
-    foundry
+    foundry,
   ],
   [publicProvider()],
 );
@@ -78,8 +78,8 @@ function App() {
       <RainbowKitProvider chains={chains} theme={customTheme}>
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<Landing />} />
             <Route element={<Layout />}>
-              <Route path="/" element={<Landing />} />
               <Route path="/rollups" element={<RollupList />} />
               <Route path="/providers" element={<ProviderList />} />
             </Route>
