@@ -7,17 +7,15 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
   goerli,
   sepolia,
   taikoTestnetSepolia,
   lineaTestnet,
-  linea,
   foundry,
+  optimismGoerli,
+  polygonMumbai,
+  polygonZkEvmTestnet,
+  zkSyncTestnet,
 } from 'wagmi/chains';
 import merge from 'lodash.merge';
 import {
@@ -36,17 +34,15 @@ import { ProviderList } from './pages/ProviderList';
 
 const { chains, publicClient } = configureChains(
   [
+    foundry,
     lineaTestnet,
     taikoTestnetSepolia,
     goerli,
     sepolia,
-    linea,
-    mainnet,
-    polygon,
-    optimism,
-    arbitrum,
-    base,
-    foundry,
+    polygonMumbai,
+    polygonZkEvmTestnet,
+    zkSyncTestnet,
+    optimismGoerli
   ],
   [publicProvider()],
 );

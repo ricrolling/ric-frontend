@@ -30,7 +30,7 @@ export const RollupList = () => {
     const timer = setInterval(() => {
       console.log('Fetching new info');
       refetchRollupInfos();
-    }, 10000);
+    }, 3000);
     return () => clearInterval(timer);
   }, [refetchRollupInfos]);
 
