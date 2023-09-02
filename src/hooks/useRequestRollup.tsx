@@ -1,13 +1,16 @@
 import { useContractWrite } from 'wagmi';
 import RICRegistryABI from '../abis/RICRegistry.json';
-import { config } from '../configs';
+import { useGetConfigByNetwork } from './useGetConfigByNetwork';
 
 export const useRequestRollup = () => {
-  const { writeAsync, data, error, isError, isSuccess, isLoading } = useContractWrite({
-    abi: RICRegistryABI,
-    functionName: 'requestRollup',
-    address: config.RIC_CONTRACT_ADDRESS
-  });
+  const curConfig = useGetConfigByNetwork();
+
+  const { writeAsync, data, error, isError, isSuccess, isLoading } =
+    useContractWrite({
+      abi: RICRegistryABI,
+      functionName: 'requestRollup',
+      address: curConfig?.RIC_CONTRACT_ADDRESS,
+    });
 
   return { writeAsync, data, error, isError, isSuccess, isLoading };
 };

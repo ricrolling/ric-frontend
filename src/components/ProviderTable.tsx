@@ -11,7 +11,7 @@ export const ProviderTable = ({ data }: { data: Array<ProviderInfo> }) => {
             <th>Description</th>
           </tr>
         </thead>
-        
+
         {/* Body */}
         <tbody>
           {data.map((d, idx) => (

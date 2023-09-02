@@ -125,7 +125,10 @@ export const RollupCreationModal = ({
         <div className="modal-action">
           {/* if there is a button in form, it will close the modal */}
           {isLoading ? (
-            <button className="btn btn-disabled btn-neutral" onClick={(e) => e.preventDefault()}>
+            <button
+              className="btn btn-disabled btn-neutral"
+              onClick={(e) => e.preventDefault()}
+            >
               Submitting
               <span className="loading loading-spinner"></span>
             </button>

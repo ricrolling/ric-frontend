@@ -1,23 +1,33 @@
 import { useAccount, useContractRead, useContractReads } from 'wagmi';
 import RICRegistryABI from '../abis/RICRegistry.json';
-import { config } from '../configs';
+import { useGetConfigByNetwork } from './useGetConfigByNetwork';
 import { RollupInfo } from '../types';
 import { Abi } from 'viem';
 
-const ricContract = {
-  abi: RICRegistryABI as Abi,
-  address: config.RIC_CONTRACT_ADDRESS,
-};
-
 export const useGetRollups = () => {
+  const curConfig = useGetConfigByNetwork();
   const { address } = useAccount();
-  const { data: chainIDArr, error: chainIDError, refetch: refetchChainIds } = useContractRead({
+
+  const ricContract = {
+    abi: RICRegistryABI as Abi,
+    address: curConfig?.RIC_CONTRACT_ADDRESS,
+  };
+
+  const {
+    data: chainIDArr,
+    error: chainIDError,
+    refetch: refetchChainIds,
+  } = useContractRead({
     ...ricContract,
     args: [address],
     functionName: 'getUserChainIDs',
   });
 
-  const { data, refetch: refetchStatus, ...restObj } = useContractReads({
+  const {
+    data,
+    refetch: refetchStatus,
+    ...restObj
+  } = useContractReads({
     contracts:
       chainIDArr && !chainIDError
         ? (chainIDArr as number[]).map((chainId) => ({
@@ -43,7 +53,7 @@ export const useGetRollups = () => {
         }
     >,
     refetch: () => {
-      refetchChainIds().then(refetchStatus)
-    }
+      refetchChainIds().then(refetchStatus);
+    },
   };
 };

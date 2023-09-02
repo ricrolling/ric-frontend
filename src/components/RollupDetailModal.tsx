@@ -54,7 +54,7 @@ export const RollupDetailModal = ({ data }: { data?: RollupInfo }) => {
                 </p>
               </div>
               <p className="break-words text-left items-center text-base text-gray-900 dark:text-gray-300">
-                {data.config || "-"}
+                {data.config || '-'}
               </p>
             </div>
           </li>
