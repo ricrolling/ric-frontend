@@ -13,6 +13,13 @@ export const RollupCreationModal = ({
     config: '',
     chainId: 0,
   });
+  const [isNotComplete, setIsNotComplete] = useState<{
+    name: boolean;
+    chainId: boolean;
+  }>({
+    name: false,
+    chainId: false,
+  });
 
   const onInputChange =
     (fieldName: keyof RollupCreateRequest) =>
@@ -22,7 +29,9 @@ export const RollupCreationModal = ({
         [fieldName]: event.target.value,
       }));
     };
-  const onSubmitClick = () => {
+  const onSubmitClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    setIsNotComplete({ chainId: false, name: false });
+    e.preventDefault();
     if (createRequest.chainId !== 0 && createRequest.name) {
       onSubmit({ ...createRequest });
 
@@ -34,6 +43,14 @@ export const RollupCreationModal = ({
       }
 
       setCreateRequest({ chainId: 0, name: '', config: '' });
+    } else {
+      if (!createRequest.chainId && !createRequest.name) {
+        setIsNotComplete({ chainId: true, name: true });
+      } else if (!createRequest.chainId) {
+        setIsNotComplete({ chainId: true, name: false });
+      } else if (!createRequest.name) {
+        setIsNotComplete({ chainId: false, name: true });
+      }
     }
   };
 
@@ -65,10 +82,13 @@ export const RollupCreationModal = ({
               <span className="label-text">Name</span>
             </label>
             <input
-              required
               type="text"
               placeholder="MyRollup"
-              className="input input-bordered w-full max-w-xs"
+              className={
+                isNotComplete.name
+                  ? 'input input-error input-bordered w-full max-w-xs'
+                  : 'input input-bordered w-full max-w-xs'
+              }
               onChange={onInputChange('name')}
               value={createRequest?.name}
             />
@@ -78,10 +98,13 @@ export const RollupCreationModal = ({
               <span className="label-text">Chain ID</span>
             </label>
             <input
-              required
               type="number"
               placeholder="12132"
-              className="input input-bordered w-full max-w-xs"
+              className={
+                isNotComplete.chainId
+                  ? 'input input-error input-bordered w-full max-w-xs'
+                  : 'input input-bordered w-full max-w-xs'
+              }
               onChange={onInputChange('chainId')}
               value={createRequest?.chainId}
             />
