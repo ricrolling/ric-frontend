@@ -1,0 +1,3 @@
+[submodule "ric-contracts"]
+	path = ric-contracts
+	url = git@github.com:ricrolling/ric-contracts.git
