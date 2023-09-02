@@ -1,3 +1,9 @@
+export type RollupCreateRequest = {
+  name: string;
+  chainId: number;
+  config?: string;
+};
+
 export enum RollupStatus {
   REQUESTED = 'REQUESTED',
   QUEUED = 'QUEUED',
