@@ -22,7 +22,7 @@ export const RollupList = () => {
     {
       name: 'rollup 2',
       chainID: 11312,
-      config: '',
+      config: '{kdjfkjshdkjhjdsghgksjgfjgjhehkjgdkfgjkdfhgkdfjhgkjdfhgkjdhkjghdfkjghdfkjghdkjfhgkjdfhgkjdfhgkjdhfgkjhdfkjghdkfghfjdkhgfkdjghdfkjhgdfkjhgkjdfhgkjdfhgkjdfhkjgdhfgkjhdfjkghdfkjghkjdfhgkjdfhkj}',
       provider: 'RicRollup Default',
       queuedTimestamp: Date.now(),
       status: RollupStatus.QUEUED,
@@ -88,7 +88,6 @@ export const RollupList = () => {
         onSubmit={(data) => {
           console.log(data);
         }}
-        id="rollup_creation"
       />
     </>
   );

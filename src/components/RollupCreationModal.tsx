@@ -2,10 +2,8 @@ import { ChangeEvent, MouseEventHandler, useState } from 'react';
 import { RollupCreateRequest } from '../types';
 
 export const RollupCreationModal = ({
-  id,
   onSubmit,
 }: {
-  id: string;
   onSubmit: (data: RollupCreateRequest) => void;
 }) => {
   const [createRequest, setCreateRequest] = useState<RollupCreateRequest>({
@@ -36,8 +34,8 @@ export const RollupCreationModal = ({
       onSubmit({ ...createRequest });
 
       const modalControl = (
-        window as typeof window & { id: { close: () => void } }
-      )[id as keyof typeof window];
+        window as typeof window & { rollup_creation: { close: () => void } }
+      ).rollup_creation;
       if (modalControl) {
         modalControl.close();
       }
@@ -57,14 +55,14 @@ export const RollupCreationModal = ({
   const closeWithoutSubmit: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     const modalControl = (
-      window as typeof window & { id: { close: () => void } }
-    )[id as keyof typeof window];
+      window as typeof window & { rollup_creation: { close: () => void } }
+    ).rollup_creation;
     if (modalControl) {
       modalControl.close();
     }
   };
   return (
-    <dialog id={id} className="modal">
+    <dialog id="rollup_creation" className="modal">
       <form method="dialog" className="modal-box">
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
