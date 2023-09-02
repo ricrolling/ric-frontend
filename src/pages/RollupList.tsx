@@ -1,12 +1,21 @@
 import { RollupCreationModal } from '../components/RollupCreationModal';
 import { RollupTable } from '../components/RollupTable';
-import { RollupInfo, RollupStatus } from '../types';
+import { useRequestRollup } from '../hooks/useRequestRollup';
+import { RollupCreateRequest, RollupInfo, RollupStatus } from '../types';
 
 export const RollupList = () => {
+  const { writeAsync, isLoading } = useRequestRollup();
+
   const windowContext = window as unknown as typeof window & {
     rollup_creation: {
       showModal: () => void;
     };
+  };
+
+  const onSubmitCreate = async (data: RollupCreateRequest) => {
+    if (!isLoading) {
+      await writeAsync({ args: [data.name, data.chainId, data.config] });
+    }
   };
 
   // Do some data fetching here
@@ -22,7 +31,8 @@ export const RollupList = () => {
     {
       name: 'rollup 2',
       chainID: 11312,
-      config: '{kdjfkjshdkjhjdsghgksjgfjgjhehkjgdkfgjkdfhgkdfjhgkjdfhgkjdhkjghdfkjghdfkjghdkjfhgkjdfhgkjdfhgkjdhfgkjhdfkjghdkfghfjdkhgfkdjghdfkjhgdfkjhgkjdfhgkjdfhgkjdfhkjgdhfgkjhdfjkghdfkjghkjdfhgkjdfhkj}',
+      config:
+        '{kdjfkjshdkjhjdsghgksjgfjgjhehkjgdkfgjkdfhgkdfjhgkjdfhgkjdhkjghdfkjghdfkjghdkjfhgkjdfhgkjdfhgkjdhfgkjhdfkjghdkfghfjdkhgfkdjghdfkjhgdfkjhgkjdfhgkjdfhgkjdfhkjgdhfgkjhdfjkghdfkjghkjdfhgkjdfhkj}',
       provider: 'RicRollup Default',
       queuedTimestamp: Date.now(),
       status: RollupStatus.QUEUED,
@@ -84,11 +94,7 @@ export const RollupList = () => {
           </div>
         </div>
       </div>
-      <RollupCreationModal
-        onSubmit={(data) => {
-          console.log(data);
-        }}
-      />
+      <RollupCreationModal isLoading={isLoading} onSubmit={onSubmitCreate} />
     </>
   );
 };

@@ -2,8 +2,10 @@ import { ChangeEvent, MouseEventHandler, useState } from 'react';
 import { RollupCreateRequest } from '../types';
 
 export const RollupCreationModal = ({
+  isLoading,
   onSubmit,
 }: {
+  isLoading: boolean;
   onSubmit: (data: RollupCreateRequest) => void;
 }) => {
   const [createRequest, setCreateRequest] = useState<RollupCreateRequest>({
@@ -27,12 +29,11 @@ export const RollupCreationModal = ({
         [fieldName]: event.target.value,
       }));
     };
-  const onSubmitClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const onSubmitClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
     setIsNotComplete({ chainId: false, name: false });
     e.preventDefault();
     if (createRequest.chainId !== 0 && createRequest.name) {
-      onSubmit({ ...createRequest });
-
+      await onSubmit({ ...createRequest });
       const modalControl = (
         window as typeof window & { rollup_creation: { close: () => void } }
       ).rollup_creation;
@@ -123,9 +124,16 @@ export const RollupCreationModal = ({
 
         <div className="modal-action">
           {/* if there is a button in form, it will close the modal */}
-          <button className="btn btn-primary" onClick={onSubmitClick}>
-            Submit
-          </button>
+          {isLoading ? (
+            <button className="btn btn-disabled btn-neutral" onClick={(e) => e.preventDefault()}>
+              Submitting
+              <span className="loading loading-spinner"></span>
+            </button>
+          ) : (
+            <button className="btn btn-primary" onClick={onSubmitClick}>
+              Submit
+            </button>
+          )}
         </div>
       </form>
     </dialog>

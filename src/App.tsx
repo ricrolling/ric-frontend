@@ -17,6 +17,7 @@ import {
   taikoTestnetSepolia,
   lineaTestnet,
   linea,
+  foundry
 } from 'wagmi/chains';
 import merge from 'lodash.merge';
 import {
@@ -45,6 +46,7 @@ const { chains, publicClient } = configureChains(
     optimism,
     arbitrum,
     base,
+    foundry
   ],
   [publicProvider()],
 );
