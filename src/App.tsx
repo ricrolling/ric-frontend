@@ -56,7 +56,7 @@ const wagmiConfig = createConfig({
       groupName: 'Reccomended',
       wallets: [
         injectedWallet({ chains }),
-        metaMaskWallet({ chains, projectId: "RicRolling" }),
+        metaMaskWallet({ chains, projectId: 'RicRolling' }),
         safeWallet({ chains }),
       ],
     },
