@@ -50,10 +50,10 @@ export const useGetRollups = () => {
     ?.map((data, idx) => {
       if (data.result && l1AddressesArr && l1AddressesArr[idx].result) {
         let portalAddress = '';
-        if ((l1AddressesArr[idx].result as string).length >= 372) {
+        if ((l1AddressesArr[idx].result as string).length >= 2 + (32 + 16 * 20 + 20)*2) {
           portalAddress = (l1AddressesArr[idx].result as string).slice(
-            352,
-            372,
+            2 + (32 + 16 * 20)*2,
+            2 + (32 + 16 * 20 + 20)*2,
           );
         }
         return {
