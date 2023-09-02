@@ -7,6 +7,6 @@ export const config: {
   };
 } = {
   foundry: {
-    RIC_CONTRACT_ADDRESS: '0x8464135c8F25Da09e49BC8782676a84730C318bC',
+    RIC_CONTRACT_ADDRESS: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
   },
 };

@@ -61,7 +61,7 @@ export const useGetRollups = () => {
           status: mapRollupStatusNumberToStringEnum(
             (data.result as RollupInfo).status as unknown as number,
           ),
-          portalAddress,
+          portalAddress: `0x${portalAddress}`,
         };
       }
       return undefined;
