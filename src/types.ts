@@ -18,3 +18,8 @@ export type RollupInfo = {
   chainID: number;
   config: string;
 };
+
+export type ProviderInfo = {
+  name: string;
+  description: string;
+};
