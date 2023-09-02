@@ -1,4 +1,5 @@
 import { RollupInfo } from '../types';
+import { StatusPill } from './StatusPill';
 
 const RollupDetailRow = ({
   label,
@@ -38,7 +39,16 @@ export const RollupDetailModal = ({ data }: { data?: RollupInfo }) => {
           className="p-8 divide-y divide-gray-200 dark:divide-gray-700"
         >
           <li className="pt-3 pb-0 sm:pt-4">
-            <RollupDetailRow label="Status" value={data.status} />
+            <div className="flex flex-col pt-4">
+              <div className="flex-1 min-w-0 text-left">
+                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  Status
+                </p>
+              </div>
+              <p className="break-words text-left items-center text-base text-gray-900 dark:text-gray-300">
+                <StatusPill status={data.status} />
+              </p>
+            </div>
             <RollupDetailRow label="Provider" value={data.provider} />
             <RollupDetailRow label="ChainID" value={data.chainID} />
             <RollupDetailRow

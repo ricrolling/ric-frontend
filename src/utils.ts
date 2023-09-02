@@ -9,7 +9,7 @@ export const mapRollupStatusNumberToStringEnum = (
     case 1:
       return RollupStatus.QUEUED;
     case 2:
-      return RollupStatus.REQUESTED;
+      return RollupStatus.ACTIVATED;
     default:
       throw new Error("Invalid status")
   }
