@@ -1,35 +1,91 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {
+  darkTheme,
+  RainbowKitProvider,
+  Theme,
+  connectorsForWallets,
+} from '@rainbow-me/rainbowkit';
+import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+  goerli,
+  sepolia,
+  taikoTestnetSepolia,
+  lineaTestnet,
+  linea,
+} from 'wagmi/chains';
+import merge from 'lodash.merge';
+import {
+  injectedWallet,
+  metaMaskWallet,
+  safeWallet,
+} from '@rainbow-me/rainbowkit/wallets';
+
+import { publicProvider } from 'wagmi/providers/public';
+import { Layout } from './Layout';
+import { RollupList } from './pages/RollupList';
+import '@rainbow-me/rainbowkit/styles.css';
+import './App.css';
+import { Landing } from './pages/Landing';
+import { ProviderList } from './pages/ProviderList';
+
+const { chains, publicClient } = configureChains(
+  [
+    lineaTestnet,
+    taikoTestnetSepolia,
+    goerli,
+    sepolia,
+    linea,
+    mainnet,
+    polygon,
+    optimism,
+    arbitrum,
+    base,
+  ],
+  [publicProvider()],
+);
+
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  connectors: connectorsForWallets([
+    {
+      groupName: 'Reccomended',
+      wallets: [
+        injectedWallet({ chains }),
+        metaMaskWallet({ chains, projectId: "RicRolling" }),
+        safeWallet({ chains }),
+      ],
+    },
+  ]),
+  publicClient,
+});
+
+const customTheme = merge(darkTheme({ fontStack: 'system' }), {
+  fonts: {
+    body: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";',
+  },
+} as Theme);
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <WagmiConfig config={wagmiConfig}>
+      <RainbowKitProvider chains={chains} theme={customTheme}>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Landing />} />
+              <Route path="/rollups" element={<RollupList />} />
+              <Route path="/providers" element={<ProviderList />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </RainbowKitProvider>
+    </WagmiConfig>
+  );
 }
 
-export default App
+export default App;

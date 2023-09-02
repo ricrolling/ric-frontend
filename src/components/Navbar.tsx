@@ -1,3 +1,7 @@
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { Link } from 'react-router-dom';
+import logo from '../assets/small-logo.svg';
+
 export const Navbar = () => {
   return (
     <div className="navbar bg-base-100">
@@ -24,51 +28,30 @@ export const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Item 1</a>
+              <Link to="/rollups">My rollups</Link>
             </li>
             <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>Item 3</a>
+              <Link to="/providers">Providers</Link>
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
+        <h1 className="normal-case text-xl mx-2">
+          <img src={logo} alt="our logo" />
+        </h1>
+        <div className="hidden lg:flex">
+          <ul className="menu menu-horizontal px-1 text-lg">
+            <li className="mx-1">
+              <Link to="/rollups">My rollups</Link>
+            </li>
+            <li className="mx-1">
+              <Link to="/providers">Providers</Link>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li tabIndex={0}>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
-      </div>
+
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <ConnectButton />
       </div>
     </div>
   );
