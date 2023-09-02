@@ -19,6 +19,10 @@ export type RollupInfo = {
   config: string;
 };
 
+export type RollupInfoWithPortalAddress = RollupInfo & {
+  portalAddress: string;
+}
+
 export type ProviderInfo = {
   name: string;
   description: string;

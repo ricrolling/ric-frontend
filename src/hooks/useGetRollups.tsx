@@ -1,8 +1,9 @@
 import { useAccount, useContractRead, useContractReads } from 'wagmi';
 import RICRegistryABI from '../abis/RICRegistry.json';
 import { useGetConfigByNetwork } from './useGetConfigByNetwork';
-import { RollupInfo } from '../types';
+import { RollupInfo, RollupInfoWithPortalAddress } from '../types';
 import { Abi } from 'viem';
+import { mapRollupStatusNumberToStringEnum } from '../utils';
 
 export const useGetRollups = () => {
   const curConfig = useGetConfigByNetwork();
@@ -23,11 +24,7 @@ export const useGetRollups = () => {
     functionName: 'getUserChainIDs',
   });
 
-  const {
-    data,
-    refetch: refetchStatus,
-    ...restObj
-  } = useContractReads({
+  const { data: rollupInfoDataArr, refetch: refetchStatus } = useContractReads({
     contracts:
       chainIDArr && !chainIDError
         ? (chainIDArr as number[]).map((chainId) => ({
@@ -38,22 +35,46 @@ export const useGetRollups = () => {
         : [],
   });
 
+  const { data: l1AddressesArr, refetch: refetchL1Address } = useContractReads({
+    contracts:
+      chainIDArr && !chainIDError
+        ? (chainIDArr as number[]).map((chainId) => ({
+            ...ricContract,
+            functionName: 'activatedRollupsL1Addresses',
+            args: [chainId],
+          }))
+        : [],
+  });
+
+  const processedData = rollupInfoDataArr
+    ?.map((data, idx) => {
+      if (data.result && l1AddressesArr && l1AddressesArr[idx].result) {
+        let portalAddress = '';
+        if ((l1AddressesArr[idx].result as string).length >= 372) {
+          portalAddress = (l1AddressesArr[idx].result as string).slice(
+            352,
+            372,
+          );
+        }
+        return {
+          ...(data.result as RollupInfo),
+          status: mapRollupStatusNumberToStringEnum(
+            (data.result as RollupInfo).status as unknown as number,
+          ),
+          portalAddress,
+        };
+      }
+      return undefined;
+    })
+    .filter((d) => d !== undefined) as Array<RollupInfoWithPortalAddress>;
+
   return {
-    ...restObj,
-    data: data as Array<
-      | {
-          error: Error;
-          result?: undefined;
-          status: 'failure';
-        }
-      | {
-          error?: undefined;
-          result: RollupInfo;
-          status: 'success';
-        }
-    >,
+    data: processedData,
     refetch: () => {
-      refetchChainIds().then(refetchStatus);
+      refetchChainIds().then(() => {
+        refetchStatus();
+        refetchL1Address();
+      });
     },
   };
 };

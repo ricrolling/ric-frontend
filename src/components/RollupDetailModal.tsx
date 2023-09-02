@@ -1,4 +1,4 @@
-import { RollupInfo } from '../types';
+import { RollupInfoWithPortalAddress } from '../types';
 import { StatusPill } from './StatusPill';
 
 const RollupDetailRow = ({
@@ -22,7 +22,11 @@ const RollupDetailRow = ({
   );
 };
 
-export const RollupDetailModal = ({ data }: { data?: RollupInfo }) => {
+export const RollupDetailModal = ({
+  data,
+}: {
+  data?: RollupInfoWithPortalAddress;
+}) => {
   if (!data) {
     return <dialog id="rollup_detail" className="modal"></dialog>;
   }
@@ -49,8 +53,12 @@ export const RollupDetailModal = ({ data }: { data?: RollupInfo }) => {
                 <StatusPill status={data.status} />
               </p>
             </div>
-            <RollupDetailRow label="Provider" value={data.provider} />
             <RollupDetailRow label="ChainID" value={data.chainID} />
+            <RollupDetailRow label="Provider" value={data.provider} />
+            <RollupDetailRow
+              label="Portal Address"
+              value={data.portalAddress || '-'}
+            />
             <RollupDetailRow
               label="Queued Timestamp"
               value={data.queuedTimestamp.toString()}

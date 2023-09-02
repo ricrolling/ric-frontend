@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { RollupInfo } from '../types';
+import { RollupInfoWithPortalAddress } from '../types';
 import { StatusPill } from './StatusPill';
 import { RollupDetailModal } from './RollupDetailModal';
 
-export const RollupTable = ({ data }: { data: Array<RollupInfo> }) => {
+export const RollupTable = ({ data }: { data: Array<RollupInfoWithPortalAddress> }) => {
   const [currentModalDisplayData, setCurrentModalDisplayData] =
-    useState<RollupInfo>();
+    useState<RollupInfoWithPortalAddress>();
   const windowContext = window as unknown as typeof window & {
     rollup_detail: {
       showModal: () => void;
@@ -28,6 +28,7 @@ export const RollupTable = ({ data }: { data: Array<RollupInfo> }) => {
               <th>Name</th>
               <th>ChainId</th>
               <th>Provider</th>
+              <th>PortalAddress</th>
               <th></th>
             </tr>
           </thead>
@@ -50,6 +51,7 @@ export const RollupTable = ({ data }: { data: Array<RollupInfo> }) => {
                 </td>
                 <td>{d.chainID.toString()}</td>
                 <td>{d.provider}</td>
+                <td>{d.portalAddress ? d.portalAddress : "-"}</td>
                 <th>
                   <button
                     className="btn btn-outline btn-sm"
