@@ -6,8 +6,9 @@ export const Layout = () => {
   const { isConnected } = useAccount();
   const navigate = useNavigate();
 
+  // Only go to the dashboard if its connected, else if someone tries to visit it navigate to landing
   if (!isConnected) {
-    // navigate('/');
+    navigate('/');
   }
   return (
     <>
