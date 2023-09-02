@@ -3,7 +3,8 @@ import { RollupCreationModal } from '../components/RollupCreationModal';
 import { RollupTable } from '../components/RollupTable';
 import { useGetRollups } from '../hooks/useGetRollups';
 import { useRequestRollup } from '../hooks/useRequestRollup';
-import { RollupCreateRequest, RollupInfo, RollupStatus } from '../types';
+import { RollupCreateRequest, RollupInfo } from '../types';
+import { mapRollupStatusNumberToStringEnum } from '../utils';
 
 export const RollupList = () => {
   const {
@@ -92,8 +93,13 @@ export const RollupList = () => {
               data={
                 rollupData
                   ? (rollupData
-                      .map((d) => d.result)
-                      .filter((d) => d !== undefined) as RollupInfo[])
+                      .filter((d) => d.result !== undefined)
+                      .map((d) => ({
+                        ...d.result,
+                        status: mapRollupStatusNumberToStringEnum(
+                          d.result!.status! as unknown as number,
+                        ),
+                      })) as RollupInfo[])
                   : []
               }
             />

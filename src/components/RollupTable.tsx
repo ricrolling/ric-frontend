@@ -35,7 +35,7 @@ export const RollupTable = ({ data }: { data: Array<RollupInfo> }) => {
           <tbody>
             {/* row 1 */}
             {data.map((d, idx) => (
-              <tr key={d.chainID}>
+              <tr key={idx}>
                 <td>
                   <div className="flex items-center space-x-3">
                     <StatusPill status={d.status} />
@@ -48,7 +48,7 @@ export const RollupTable = ({ data }: { data: Array<RollupInfo> }) => {
                     </div>
                   </div>
                 </td>
-                <td>{d.chainID}</td>
+                <td>{d.chainID.toString()}</td>
                 <td>{d.provider}</td>
                 <th>
                   <button

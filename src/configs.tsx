@@ -1,4 +1,4 @@
-import supportedChains from 'wagmi/chains';
+import * as supportedChains from 'wagmi/chains';
 
 export type SupportedChainsKey = keyof typeof supportedChains;
 export const config: {

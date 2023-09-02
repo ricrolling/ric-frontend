@@ -8,15 +8,15 @@ const RollupDetailRow = ({
   value: string | number;
 }) => {
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex flex-col pt-4">
       <div className="flex-1 min-w-0 text-left">
         <p className="text-sm font-medium text-gray-900 dark:text-white">
           {label}
         </p>
       </div>
-      <div className="inline-flex items-center text-base text-gray-900 dark:text-white">
-        {value}
-      </div>
+      <p className="break-words text-left items-center text-base text-gray-900 dark:text-gray-300">
+        {value.toString()}
+      </p>
     </div>
   );
 };
@@ -42,21 +42,13 @@ export const RollupDetailModal = ({ data }: { data?: RollupInfo }) => {
             <RollupDetailRow label="Provider" value={data.provider} />
             <RollupDetailRow label="ChainID" value={data.chainID} />
             <RollupDetailRow
-              label="QueuedTimestamp"
-              value={data.queuedTimestamp}
+              label="Queued Timestamp"
+              value={data.queuedTimestamp.toString()}
             />
-
-            {/* Code */}
-            <div className="flex flex-col pt-4">
-              <div className="flex-1 min-w-0 text-left">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  Additional Configs
-                </p>
-              </div>
-              <p className="break-words text-left items-center text-base text-gray-900 dark:text-gray-300">
-                {data.config || '-'}
-              </p>
-            </div>
+            <RollupDetailRow
+              label="Additional Configs"
+              value={data.config || '-'}
+            />
           </li>
         </ul>
       </form>

@@ -1,5 +1,5 @@
 import { useNetwork } from 'wagmi';
-import supportedChains from 'wagmi/chains';
+import * as supportedChains from 'wagmi/chains';
 import { config } from '../configs';
 
 export const useGetConfigByNetwork = () => {
