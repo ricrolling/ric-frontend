@@ -6,7 +6,7 @@ export const config: {
     RIC_CONTRACT_ADDRESS: `0x${string}`;
   };
 } = {
-  foundry: {
-    RIC_CONTRACT_ADDRESS: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+  lineaTestnet: {
+    RIC_CONTRACT_ADDRESS: '0x13Ce9a6d5dd1b9301da30d031dbcB1ef653c5397',
   },
 };
